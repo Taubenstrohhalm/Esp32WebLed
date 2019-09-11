@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Fetch API</title>
+</head>
+
+<body>
+  <button id="ledOn" onclick="ledOn()">LED On</button>
+  <button id="ledOff" onclick="ledOff()">LED OFF </button>
+  <div id="led" style="width: 20px; height: 20px; background: black; border-radius: 50%"></div>
+  <p id="result"></p>
+</body>
+<script>
+
+  let led = document.getElementById('led');
+  window.onload = getLed;
+
+  function updateLed(data) {
+    led.style.background = data.led === 'on' ? "yellow" : 'black';
+  }
+  function getLed() {
+    fetch('led', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(data => updateLed(data))
+      .catch(err => console.log(err))
+  }
+
+  function ledOn() {
+    fetch('led', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ led: "on" })
+    })
+
+      .then(res => res.json())
+      .then(data => updateLed(data))
+      .catch(err => console.log(err))
+  }
+
+  function ledOff() {
+    fetch('led', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ led: "off" })
+    })
+
+      .then(res => res.json())
+      .then(data => updateLed(data))
+      .catch(err => console.log(err))
+  }
+
+
+</script>
+
+</html>
